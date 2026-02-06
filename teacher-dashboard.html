@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sider | لوحة تحكم المدرس</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --coral-red: #E94560;
+            --dark-red: #C0392B;
+            --gold: #F5C518;
+            --info-blue: #0FBCF9;
+            --success-green: #00C9A7;
+            --dark-bg: #0F0F1A;
+            --card-bg: #1A1A2E;
+            --white: #FFFFFF;
+            --gray: #A8A8B3;
+            --primary-gradient: linear-gradient(135deg, #E94560 0%, #C0392B 100%);
+            --gold-gradient: linear-gradient(135deg, #F5C518 0%, #E94560 100%);
+        }
+
+        body {
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background: var(--dark-bg);
+            color: var(--white);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Animated Logo */
+        .animated-logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            animation: fadeInDown 1s ease;
+        }
+
+        .logo-svg {
+            width: 60px;
+            height: 60px;
+            filter: drop-shadow(0 0 20px rgba(233, 69, 96, 0.5));
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFFFFF 0%, #F5C518 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Welcome Screen */
+        .welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0F0F1A 0%, #1A1A2E 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            animation: fadeOut 1s ease 3s forwards;
+        }
+
+        .welcome-screen.hidden {
+            display: none;
+        }
+
+        .big-logo {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 2rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .welcome-message {
+            text-align: center;
+            animation: fadeInUp 1s ease 0.5s backwards;
+        }
+
+        .greeting {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFFFFF 0%, #F5C518 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .wave {
+            display: inline-block;
+            animation: wave 2s ease-in-out infinite;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(20deg); }
+            75% { transform: rotate(-20deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Main Layout */
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+            opacity: 0;
+            animation: fadeIn 1s ease 3.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: var(--card-bg);
+            padding: 2rem 1.5rem;
+            border-left: 3px solid var(--coral-red);
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .nav-menu {
+            list-style: none;
+            margin-top: 3rem;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            color: var(--gray);
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: var(--primary-gradient);
+            color: var(--white);
+            transform: translateX(-5px);
+        }
+
+        .nav-icon {
+            font-size: 1.5rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            animation: fadeInDown 0.5s ease;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.5s ease backwards;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .stat-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .stat-card:hover {
+            border-color: var(--coral-red);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(233, 69, 96, 0.3);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(233, 69, 96, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--card-bg);
+            color: var(--white);
+            border: 2px solid var(--coral-red);
+        }
+
+        .btn-secondary:hover {
+            background: var(--coral-red);
+        }
+
+        /* Courses Grid */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .course-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            animation: fadeInUp 0.5s ease backwards;
+        }
+
+        .course-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--coral-red);
+            box-shadow: 0 15px 40px rgba(233, 69, 96, 0.3);
+        }
+
+        .course-thumbnail {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #E94560 0%, #C0392B 100%);
+        }
+
+        .course-info {
+            padding: 1.5rem;
+        }
+
+        .course-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--white);
+        }
+
+        .course-stats {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .course-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .course-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            flex: 1;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: scaleIn 0.3s ease;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: var(--gray);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: var(--coral-red);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--gray);
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            background: var(--dark-bg);
+            border: 2px solid var(--gray);
+            border-radius: 12px;
+            color: var(--white);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--coral-red);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .file-upload {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 2rem;
+            background: var(--dark-bg);
+            border: 2px dashed var(--gray);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-label:hover {
+            border-color: var(--coral-red);
+            background: rgba(233, 69, 96, 0.1);
+        }
+
+        .file-name {
+            margin-top: 0.5rem;
+            color: var(--gold);
+            font-size: 0.9rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--dark-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-gradient);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Status Badge */
+        .status-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .status-draft {
+            background: rgba(168, 168, 179, 0.2);
+            color: var(--gray);
+        }
+
+        .status-pending {
+            background: rgba(15, 188, 249, 0.2);
+            color: var(--info-blue);
+        }
+
+        .status-approved {
+            background: rgba(0, 201, 167, 0.2);
+            color: var(--success-green);
+        }
+
+        .status-rejected {
+            background: rgba(233, 69, 96, 0.2);
+            color: var(--coral-red);
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid var(--coral-red);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: relative;
+                height: auto;
+                border-left: none;
+                border-bottom: 3px solid var(--coral-red);
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .greeting {
+                font-size: 2rem;
+            }
+        }
+
+        /* Hide content initially */
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Welcome Screen -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <svg class="big-logo" viewBox="0 0 200 200">
+            <g class="book-pages">
+                <path class="page-left" d="M60,80 Q50,100 60,120 L80,120 L80,80 Z" fill="url(#coral-gradient)">
+                    <animate attributeName="d" 
+                             values="M60,80 Q50,100 60,120 L80,120 L80,80 Z;
+                                     M60,80 Q45,100 60,120 L80,120 L80,80 Z;
+                                     M60,80 Q50,100 60,120 L80,120 L80,80 Z"
+                             dur="3s" repeatCount="indefinite"/>
+                </path>
+                <path class="page-right" d="M120,80 L120,120 L140,120 Q150,100 140,80 Z" fill="url(#dark-gradient)">
+                    <animate attributeName="d"
+                             values="M120,80 L120,120 L140,120 Q150,100 140,80 Z;
+                                     M120,80 L120,120 L140,120 Q155,100 140,80 Z;
+                                     M120,80 L120,120 L140,120 Q150,100 140,80 Z"
+                             dur="3s" repeatCount="indefinite"/>
+                </path>
+            </g>
+            <g class="light-rays">
+                <path d="M100,80 L90,40" stroke="url(#gold-gradient)" stroke-width="3">
+                    <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/>
+                </path>
+                <path d="M100,80 L100,35" stroke="url(#gold-gradient)" stroke-width="3">
+                    <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" begin="0.3s"/>
+                </path>
+                <path d="M100,80 L110,40" stroke="url(#gold-gradient)" stroke-width="3">
+                    <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite" begin="0.6s"/>
+                </path>
+            </g>
+            <circle cx="100" cy="80" r="50" fill="url(#glow)" opacity="0.2">
+                <animate attributeName="r" values="50;60;50" dur="3s" repeatCount="indefinite"/>
+            </circle>
+            <defs>
+                <linearGradient id="coral-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#E94560"/>
+                    <stop offset="100%" style="stop-color:#C0392B"/>
+                </linearGradient>
+                <linearGradient id="dark-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#C0392B"/>
+                    <stop offset="100%" style="stop-color:#8B0000"/>
+                </linearGradient>
+                <linearGradient id="gold-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style="stop-color:#F5C518"/>
+                    <stop offset="100%" style="stop-color:#E94560"/>
+                </linearGradient>
+                <radialGradient id="glow">
+                    <stop offset="0%" style="stop-color:#E94560"/>
+                    <stop offset="100%" style="stop-color:transparent"/>
+                </radialGradient>
+            </defs>
+        </svg>
+        <div class="welcome-message">
+            <h1 class="greeting">
+                <span class="wave">👋</span>
+                <span>أهلاً بيك يا صديقي!</span>
+            </h1>
+            <p style="color: var(--gray); font-size: 1.2rem;">مستعد تبدأ رحلتك التعليمية؟</p>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="animated-logo-container">
+                <svg class="logo-svg" viewBox="0 0 200 200">
+                    <g class="book-pages">
+                        <path d="M60,80 Q50,100 60,120 L80,120 L80,80 Z" fill="url(#coral-gradient-small)">
+                            <animate attributeName="d" 
+                                     values="M60,80 Q50,100 60,120 L80,120 L80,80 Z;
+                                             M60,80 Q45,100 60,120 L80,120 L80,80 Z;
+                                             M60,80 Q50,100 60,120 L80,120 L80,80 Z"
+                                     dur="3s" repeatCount="indefinite"/>
+                        </path>
+                        <path d="M120,80 L120,120 L140,120 Q150,100 140,80 Z" fill="url(#dark-gradient-small)">
+                            <animate attributeName="d"
+                                     values="M120,80 L120,120 L140,120 Q150,100 140,80 Z;
+                                             M120,80 L120,120 L140,120 Q155,100 140,80 Z;
+                                             M120,80 L120,120 L140,120 Q150,100 140,80 Z"
+                                     dur="3s" repeatCount="indefinite"/>
+                        </path>
+                    </g>
+                    <g class="light-rays">
+                        <path d="M100,80 L90,40" stroke="url(#gold-gradient-small)" stroke-width="2">
+                            <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/>
+                        </path>
+                        <path d="M100,80 L100,35" stroke="url(#gold-gradient-small)" stroke-width="2">
+                            <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" begin="0.3s"/>
+                        </path>
+                        <path d="M100,80 L110,40" stroke="url(#gold-gradient-small)" stroke-width="2">
+                            <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite" begin="0.6s"/>
+                        </path>
+                    </g>
+                    <defs>
+                        <linearGradient id="coral-gradient-small" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#E94560"/>
+                            <stop offset="100%" style="stop-color:#C0392B"/>
+                        </linearGradient>
+                        <linearGradient id="dark-gradient-small" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#C0392B"/>
+                            <stop offset="100%" style="stop-color:#8B0000"/>
+                        </linearGradient>
+                        <linearGradient id="gold-gradient-small" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#F5C518"/>
+                            <stop offset="100%" style="stop-color:#E94560"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <h1 class="logo-text">سايدر</h1>
+            </div>
+
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" data-section="dashboard">
+                            <span class="nav-icon">📊</span>
+                            <span>لوحة التحكم</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-section="courses">
+                            <span class="nav-icon">📚</span>
+                            <span>كورساتي</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-section="students">
+                            <span class="nav-icon">👥</span>
+                            <span>الطلاب</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-section="earnings">
+                            <span class="nav-icon">💰</span>
+                            <span>الأرباح</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-section="profile">
+                            <span class="nav-icon">⚙️</span>
+                            <span>الإعدادات</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" id="logoutBtn">
+                            <span class="nav-icon">🚪</span>
+                            <span>تسجيل الخروج</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section class="content-section active" id="dashboard-section">
+                <div class="page-header">
+                    <h2 class="page-title">لوحة التحكم</h2>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📚</div>
+                        <div class="stat-label">إجمالي الكورسات</div>
+                        <div class="stat-value" id="totalCourses">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-label">إجمالي الطلاب</div>
+                        <div class="stat-value" id="totalStudents">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-label">إجمالي الأرباح</div>
+                        <div class="stat-value" id="totalRevenue">0 ج.م</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-label">متوسط التقييم</div>
+                        <div class="stat-value" id="avgRating">0.0</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Courses Section -->
+            <section class="content-section" id="courses-section">
+                <div class="page-header">
+                    <h2 class="page-title">كورساتي</h2>
+                    <button class="btn btn-primary" id="addCourseBtn">
+                        <span>+ إضافة كورس جديد</span>
+                    </button>
+                </div>
+
+                <div class="courses-grid" id="coursesGrid">
+                    <!-- Courses will be loaded here -->
+                </div>
+            </section>
+
+            <!-- Students Section -->
+            <section class="content-section" id="students-section">
+                <div class="page-header">
+                    <h2 class="page-title">الطلاب</h2>
+                </div>
+                <p style="color: var(--gray);">قريباً: قائمة بجميع الطلاب المسجلين في كورساتك</p>
+            </section>
+
+            <!-- Earnings Section -->
+            <section class="content-section" id="earnings-section">
+                <div class="page-header">
+                    <h2 class="page-title">الأرباح</h2>
+                </div>
+                <p style="color: var(--gray);">قريباً: تفاصيل الأرباح والمدفوعات</p>
+            </section>
+
+            <!-- Profile Section -->
+            <section class="content-section" id="profile-section">
+                <div class="page-header">
+                    <h2 class="page-title">الإعدادات</h2>
+                </div>
+                <p style="color: var(--gray);">قريباً: إعدادات الحساب</p>
+            </section>
+        </main>
+    </div>
+
+    <!-- Add Course Modal -->
+    <div class="modal" id="courseModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">إضافة كورس جديد</h3>
+                <button class="close-modal" id="closeCourseModal">×</button>
+            </div>
+            <form id="courseForm">
+                <input type="hidden" id="courseId">
+                
+                <div class="form-group">
+                    <label class="form-label">عنوان الكورس *</label>
+                    <input type="text" class="form-control" id="courseTitle" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">الوصف *</label>
+                    <textarea class="form-control" id="courseDescription" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">المادة *</label>
+                    <select class="form-control" id="courseSubject" required>
+                        <option value="">اختر المادة</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">السعر (ج.م) *</label>
+                    <input type="number" class="form-control" id="coursePrice" min="0" step="0.01" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">سعر الخصم (ج.م)</label>
+                    <input type="number" class="form-control" id="courseDiscountPrice" min="0" step="0.01">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">صورة الكورس</label>
+                    <div class="file-upload">
+                        <input type="file" id="courseThumbnail" accept="image/*">
+                        <label class="file-upload-label" for="courseThumbnail">
+                            <span>📷</span>
+                            <span>اختر صورة الكورس</span>
+                        </label>
+                        <div class="file-name" id="thumbnailName"></div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <span id="submitBtnText">حفظ الكورس</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Lesson Modal -->
+    <div class="modal" id="lessonModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">إضافة درس جديد</h3>
+                <button class="close-modal" id="closeLessonModal">×</button>
+            </div>
+            <form id="lessonForm">
+                <input type="hidden" id="lessonCourseId">
+                
+                <div class="form-group">
+                    <label class="form-label">عنوان الدرس *</label>
+                    <input type="text" class="form-control" id="lessonTitle" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">الوصف</label>
+                    <textarea class="form-control" id="lessonDescription"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">رقم الترتيب *</label>
+                    <input type="number" class="form-control" id="lessonOrder" min="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">مدة الدرس (بالدقائق)</label>
+                    <input type="number" class="form-control" id="lessonDuration" min="1">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <input type="checkbox" id="lessonIsFree" style="width: auto; margin-left: 0.5rem;">
+                        درس مجاني (للمعاينة)
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">فيديو الدرس *</label>
+                    <div class="file-upload">
+                        <input type="file" id="lessonVideo" accept="video/*" required>
+                        <label class="file-upload-label" for="lessonVideo">
+                            <span>🎥</span>
+                            <span>اختر فيديو الدرس</span>
+                        </label>
+                        <div class="file-name" id="videoName"></div>
+                    </div>
+                    <div class="progress-bar" id="uploadProgress">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%;" id="submitLessonBtn">
+                    <span>إضافة الدرس</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const API_URL = window.location.origin;
+        let authToken = localStorage.getItem('authToken');
+
+        // Hide welcome screen after 3 seconds
+        setTimeout(() => {
+            document.getElementById('welcomeScreen').classList.add('hidden');
+        }, 3000);
+
+        // Navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const section = link.dataset.section;
+                
+                if (section) {
+                    // Update active nav link
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    
+                    // Show corresponding section
+                    document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+                    document.getElementById(`${section}-section`).classList.add('active');
+                    
+                    // Load data for specific sections
+                    if (section === 'dashboard') loadDashboard();
+                    if (section === 'courses') loadCourses();
+                }
+            });
+        });
+
+        // Load Dashboard Stats
+        async function loadDashboard() {
+            try {
+                const response = await fetch(`${API_URL}/api/teacher/dashboard`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('totalCourses').textContent = data.stats.total_courses || 0;
+                    document.getElementById('totalStudents').textContent = data.stats.total_students || 0;
+                    document.getElementById('totalRevenue').textContent = `${parseFloat(data.stats.total_revenue || 0).toFixed(2)} ج.م`;
+                    document.getElementById('avgRating').textContent = parseFloat(data.stats.avg_rating || 0).toFixed(1);
+                }
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+            }
+        }
+
+        // Load Courses
+        async function loadCourses() {
+            try {
+                const response = await fetch(`${API_URL}/api/teacher/courses`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                
+                if (response.ok) {
+                    const courses = await response.json();
+                    displayCourses(courses);
+                }
+            } catch (error) {
+                console.error('Error loading courses:', error);
+            }
+        }
+
+        // Display Courses
+        function displayCourses(courses) {
+            const grid = document.getElementById('coursesGrid');
+            
+            if (courses.length === 0) {
+                grid.innerHTML = '<p style="color: var(--gray); text-align: center; grid-column: 1/-1;">لا توجد كورسات حتى الآن. ابدأ بإضافة كورسك الأول!</p>';
+                return;
+            }
+            
+            grid.innerHTML = courses.map(course => `
+                <div class="course-card">
+                    ${course.thumbnail_url ? 
+                        `<img src="${API_URL}${course.thumbnail_url}" alt="${course.title}" class="course-thumbnail">` :
+                        `<div class="course-thumbnail"></div>`
+                    }
+                    <div class="course-info">
+                        <h3 class="course-title">${course.title}</h3>
+                        <div class="course-stats">
+                            <span class="course-stat">👥 ${course.enrollment_count || 0} طالب</span>
+                            <span class="course-stat">⭐ ${parseFloat(course.rating || 0).toFixed(1)}</span>
+                            <span class="course-stat">💰 ${course.price} ج.م</span>
+                        </div>
+                        <span class="status-badge status-${course.status}">${getStatusText(course.status)}</span>
+                        <div class="course-actions">
+                            <button class="btn btn-secondary btn-small" onclick="editCourse('${course.id}')">تعديل</button>
+                            <button class="btn btn-primary btn-small" onclick="manageLessons('${course.id}')">الدروس</button>
+                            ${course.status === 'draft' ? 
+                                `<button class="btn btn-primary btn-small" onclick="publishCourse('${course.id}')">نشر</button>` : ''
+                            }
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getStatusText(status) {
+            const statusMap = {
+                'draft': 'مسودة',
+                'pending': 'قيد المراجعة',
+                'approved': 'منشور',
+                'rejected': 'مرفوض'
+            };
+            return statusMap[status] || status;
+        }
+
+        // Load subjects for dropdown
+        async function loadSubjects() {
+            try {
+                const response = await fetch(`${API_URL}/api/subjects`);
+                if (response.ok) {
+                    const subjects = await response.json();
+                    const select = document.getElementById('courseSubject');
+                    select.innerHTML = '<option value="">اختر المادة</option>' + 
+                        subjects.map(s => `<option value="${s.id}">${s.name_ar}</option>`).join('');
+                }
+            } catch (error) {
+                console.error('Error loading subjects:', error);
+            }
+        }
+
+        // Modal handlers
+        document.getElementById('addCourseBtn').addEventListener('click', () => {
+            document.getElementById('courseForm').reset();
+            document.getElementById('courseId').value = '';
+            document.getElementById('modalTitle').textContent = 'إضافة كورس جديد';
+            document.getElementById('courseModal').classList.add('active');
+            loadSubjects();
+        });
+
+        document.getElementById('closeCourseModal').addEventListener('click', () => {
+            document.getElementById('courseModal').classList.remove('active');
+        });
+
+        document.getElementById('closeLessonModal').addEventListener('click', () => {
+            document.getElementById('lessonModal').classList.remove('active');
+        });
+
+        // File name display
+        document.getElementById('courseThumbnail').addEventListener('change', (e) => {
+            const fileName = e.target.files[0]?.name || '';
+            document.getElementById('thumbnailName').textContent = fileName;
+        });
+
+        document.getElementById('lessonVideo').addEventListener('change', (e) => {
+            const fileName = e.target.files[0]?.name || '';
+            document.getElementById('videoName').textContent = fileName;
+        });
+
+        // Course form submission
+        document.getElementById('courseForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            formData.append('title', document.getElementById('courseTitle').value);
+            formData.append('description', document.getElementById('courseDescription').value);
+            formData.append('subject_id', document.getElementById('courseSubject').value);
+            formData.append('price', document.getElementById('coursePrice').value);
+            formData.append('discount_price', document.getElementById('courseDiscountPrice').value || 0);
+            
+            const thumbnail = document.getElementById('courseThumbnail').files[0];
+            if (thumbnail) {
+                formData.append('thumbnail', thumbnail);
+            }
+            
+            const courseId = document.getElementById('courseId').value;
+            const url = courseId ? 
+                `${API_URL}/api/teacher/courses/${courseId}` : 
+                `${API_URL}/api/teacher/courses`;
+            const method = courseId ? 'PUT' : 'POST';
+            
+            try {
+                const response = await fetch(url, {
+                    method: method,
+                    headers: { 'Authorization': `Bearer ${authToken}` },
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    alert('تم حفظ الكورس بنجاح!');
+                    document.getElementById('courseModal').classList.remove('active');
+                    loadCourses();
+                } else {
+                    alert('حدث خطأ أثناء حفظ الكورس');
+                }
+            } catch (error) {
+                console.error('Error saving course:', error);
+                alert('حدث خطأ أثناء حفظ الكورس');
+            }
+        });
+
+        // Lesson form submission
+        document.getElementById('lessonForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            formData.append('title', document.getElementById('lessonTitle').value);
+            formData.append('description', document.getElementById('lessonDescription').value);
+            formData.append('order_number', document.getElementById('lessonOrder').value);
+            formData.append('duration_minutes', document.getElementById('lessonDuration').value);
+            formData.append('is_free', document.getElementById('lessonIsFree').checked);
+            
+            const video = document.getElementById('lessonVideo').files[0];
+            if (video) {
+                formData.append('video', video);
+            }
+            
+            const courseId = document.getElementById('lessonCourseId').value;
+            
+            try {
+                document.getElementById('uploadProgress').style.display = 'block';
+                document.getElementById('submitLessonBtn').disabled = true;
+                
+                const xhr = new XMLHttpRequest();
+                
+                xhr.upload.addEventListener('progress', (e) => {
+                    if (e.lengthComputable) {
+                        const percent = (e.loaded / e.total) * 100;
+                        document.getElementById('progressFill').style.width = percent + '%';
+                    }
+                });
+                
+                xhr.addEventListener('load', () => {
+                    if (xhr.status === 200) {
+                        alert('تم إضافة الدرس بنجاح!');
+                        document.getElementById('lessonModal').classList.remove('active');
+                        document.getElementById('lessonForm').reset();
+                        document.getElementById('uploadProgress').style.display = 'none';
+                        document.getElementById('progressFill').style.width = '0%';
+                        document.getElementById('submitLessonBtn').disabled = false;
+                    } else {
+                        alert('حدث خطأ أثناء رفع الدرس');
+                        document.getElementById('submitLessonBtn').disabled = false;
+                    }
+                });
+                
+                xhr.open('POST', `${API_URL}/api/teacher/courses/${courseId}/lessons`);
+                xhr.setRequestHeader('Authorization', `Bearer ${authToken}`);
+                xhr.send(formData);
+                
+            } catch (error) {
+                console.error('Error adding lesson:', error);
+                alert('حدث خطأ أثناء إضافة الدرس');
+                document.getElementById('submitLessonBtn').disabled = false;
+            }
+        });
+
+        // Global functions
+        window.editCourse = async (courseId) => {
+            // TODO: Load course data and populate form
+            document.getElementById('courseModal').classList.add('active');
+        };
+
+        window.manageLessons = (courseId) => {
+            document.getElementById('lessonCourseId').value = courseId;
+            document.getElementById('lessonModal').classList.add('active');
+        };
+
+        window.publishCourse = async (courseId) => {
+            if (confirm('هل أنت متأكد من أنك تريد إرسال الكورس للمراجعة؟')) {
+                try {
+                    const response = await fetch(`${API_URL}/api/teacher/courses/${courseId}/publish`, {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${authToken}` }
+                    });
+                    
+                    if (response.ok) {
+                        alert('تم إرسال الكورس للمراجعة!');
+                        loadCourses();
+                    }
+                } catch (error) {
+                    console.error('Error publishing course:', error);
+                }
+            }
+        };
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('authToken');
+            window.location.href = '/login.html';
+        });
+
+        // Check authentication
+        if (!authToken) {
+            window.location.href = '/login.html';
+        } else {
+            loadDashboard();
+        }
+    </script>
+</body>
+</html>

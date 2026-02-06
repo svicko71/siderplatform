@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sider | تسجيل الدخول</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --coral-red: #E94560;
+            --dark-red: #C0392B;
+            --gold: #F5C518;
+            --dark-bg: #0F0F1A;
+            --card-bg: #1A1A2E;
+            --white: #FFFFFF;
+            --gray: #A8A8B3;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #0F0F1A 0%, #1A1A2E 100%);
+            color: var(--white);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .login-container {
+            background: var(--card-bg);
+            border-radius: 30px;
+            padding: 3rem;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(233, 69, 96, 0.3);
+            animation: slideUp 0.6s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1rem;
+        }
+
+        .logo-text {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFFFFF 0%, #F5C518 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .welcome-text {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .welcome-text h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-text p {
+            color: var(--gray);
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid var(--gray);
+            background: transparent;
+            color: var(--white);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #E94560 0%, #C0392B 100%);
+            border-color: var(--coral-red);
+        }
+
+        .form-content {
+            display: none;
+        }
+
+        .form-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--gray);
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            background: var(--dark-bg);
+            border: 2px solid var(--gray);
+            border-radius: 12px;
+            color: var(--white);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--coral-red);
+        }
+
+        .form-control::placeholder {
+            color: var(--gray);
+        }
+
+        .role-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .role-option {
+            position: relative;
+        }
+
+        .role-option input {
+            display: none;
+        }
+
+        .role-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: var(--dark-bg);
+            border: 2px solid var(--gray);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .role-option input:checked + .role-label {
+            background: linear-gradient(135deg, #E94560 0%, #C0392B 100%);
+            border-color: var(--coral-red);
+        }
+
+        .role-icon {
+            font-size: 2rem;
+        }
+
+        .role-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #E94560 0%, #C0392B 100%);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(233, 69, 96, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 2rem 0;
+            color: var(--gray);
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--gray);
+        }
+
+        .divider span {
+            padding: 0 1rem;
+        }
+
+        .social-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .btn-social {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1rem;
+            border: 2px solid var(--gray);
+            background: var(--dark-bg);
+            color: var(--white);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-social:hover {
+            border-color: var(--coral-red);
+            transform: translateY(-3px);
+        }
+
+        .btn-google {
+            border-color: #4285F4;
+        }
+
+        .btn-google:hover {
+            background: rgba(66, 133, 244, 0.1);
+            border-color: #4285F4;
+        }
+
+        .btn-facebook {
+            border-color: #1877F2;
+        }
+
+        .btn-facebook:hover {
+            background: rgba(24, 119, 242, 0.1);
+            border-color: #1877F2;
+        }
+
+        .social-icon {
+            font-size: 1.5rem;
+        }
+
+        .error-message {
+            background: rgba(233, 69, 96, 0.1);
+            color: var(--coral-red);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .success-message {
+            background: rgba(0, 201, 167, 0.1);
+            color: #00C9A7;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .login-container {
+                padding: 2rem;
+            }
+
+            .logo-text {
+                font-size: 2rem;
+            }
+
+            .role-selector {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo-container">
+            <svg class="logo-svg" viewBox="0 0 200 200">
+                <g class="book-pages">
+                    <path d="M60,80 Q50,100 60,120 L80,120 L80,80 Z" fill="url(#coral-gradient)">
+                        <animate attributeName="d" 
+                                 values="M60,80 Q50,100 60,120 L80,120 L80,80 Z;
+                                         M60,80 Q45,100 60,120 L80,120 L80,80 Z;
+                                         M60,80 Q50,100 60,120 L80,120 L80,80 Z"
+                                 dur="3s" repeatCount="indefinite"/>
+                    </path>
+                    <path d="M120,80 L120,120 L140,120 Q150,100 140,80 Z" fill="url(#dark-gradient)">
+                        <animate attributeName="d"
+                                 values="M120,80 L120,120 L140,120 Q150,100 140,80 Z;
+                                         M120,80 L120,120 L140,120 Q155,100 140,80 Z;
+                                         M120,80 L120,120 L140,120 Q150,100 140,80 Z"
+                                 dur="3s" repeatCount="indefinite"/>
+                    </path>
+                </g>
+                <g class="light-rays">
+                    <path d="M100,80 L90,40" stroke="url(#gold-gradient)" stroke-width="3">
+                        <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/>
+                    </path>
+                    <path d="M100,80 L100,35" stroke="url(#gold-gradient)" stroke-width="3">
+                        <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" begin="0.3s"/>
+                    </path>
+                    <path d="M100,80 L110,40" stroke="url(#gold-gradient)" stroke-width="3">
+                        <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite" begin="0.6s"/>
+                    </path>
+                </g>
+                <defs>
+                    <linearGradient id="coral-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#E94560"/>
+                        <stop offset="100%" style="stop-color:#C0392B"/>
+                    </linearGradient>
+                    <linearGradient id="dark-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#C0392B"/>
+                        <stop offset="100%" style="stop-color:#8B0000"/>
+                    </linearGradient>
+                    <linearGradient id="gold-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#F5C518"/>
+                        <stop offset="100%" style="stop-color:#E94560"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+            <h1 class="logo-text">سايدر</h1>
+        </div>
+
+        <div class="welcome-text">
+            <h2>أهلاً بيك! 👋</h2>
+            <p>ابدأ رحلتك التعليمية معنا</p>
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+        <div class="success-message" id="successMessage"></div>
+
+        <div class="tab-buttons">
+            <button class="tab-btn active" data-tab="login">تسجيل الدخول</button>
+            <button class="tab-btn" data-tab="register">إنشاء حساب</button>
+        </div>
+
+        <!-- Login Form -->
+        <div class="form-content active" id="login-form">
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">البريد الإلكتروني</label>
+                    <input type="email" class="form-control" id="loginEmail" placeholder="example@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">كلمة المرور</label>
+                    <input type="password" class="form-control" id="loginPassword" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="loginBtn">
+                    تسجيل الدخول
+                </button>
+            </form>
+
+            <div class="divider">
+                <span>أو</span>
+            </div>
+
+            <div class="social-buttons">
+                <a href="/auth/google" class="btn-social btn-google">
+                    <span class="social-icon">🔵</span>
+                    <span>تسجيل الدخول بجوجل</span>
+                </a>
+                <a href="/auth/facebook" class="btn-social btn-facebook">
+                    <span class="social-icon">📘</span>
+                    <span>تسجيل الدخول بفيسبوك</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Register Form -->
+        <div class="form-content" id="register-form">
+            <form id="registerForm">
+                <div class="form-group">
+                    <label class="form-label">الاسم الكامل</label>
+                    <input type="text" class="form-control" id="registerName" placeholder="أدخل اسمك الكامل" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">البريد الإلكتروني</label>
+                    <input type="email" class="form-control" id="registerEmail" placeholder="example@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">رقم الهاتف</label>
+                    <input type="tel" class="form-control" id="registerPhone" placeholder="01XXXXXXXXX" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">كلمة المرور</label>
+                    <input type="password" class="form-control" id="registerPassword" placeholder="••••••••" required minlength="6">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">اختر نوع الحساب</label>
+                    <div class="role-selector">
+                        <div class="role-option">
+                            <input type="radio" name="role" value="student" id="roleStudent" checked>
+                            <label for="roleStudent" class="role-label">
+                                <span class="role-icon">🎓</span>
+                                <span class="role-name">طالب</span>
+                            </label>
+                        </div>
+                        <div class="role-option">
+                            <input type="radio" name="role" value="teacher" id="roleTeacher">
+                            <label for="roleTeacher" class="role-label">
+                                <span class="role-icon">👨‍🏫</span>
+                                <span class="role-name">مدرس</span>
+                            </label>
+                        </div>
+                        <div class="role-option">
+                            <input type="radio" name="role" value="parent" id="roleParent">
+                            <label for="roleParent" class="role-label">
+                                <span class="role-icon">👪</span>
+                                <span class="role-name">ولي أمر</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" id="parentPhoneGroup" style="display: none;">
+                    <label class="form-label">رقم هاتف ولي الأمر (اختياري)</label>
+                    <input type="tel" class="form-control" id="parentPhone" placeholder="01XXXXXXXXX">
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="registerBtn">
+                    إنشاء حساب
+                </button>
+            </form>
+
+            <div class="divider">
+                <span>أو</span>
+            </div>
+
+            <div class="social-buttons">
+                <a href="/auth/google" class="btn-social btn-google">
+                    <span class="social-icon">🔵</span>
+                    <span>التسجيل بجوجل</span>
+                </a>
+                <a href="/auth/facebook" class="btn-social btn-facebook">
+                    <span class="social-icon">📘</span>
+                    <span>التسجيل بفيسبوك</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = window.location.origin;
+
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tab = btn.dataset.tab;
+                
+                // Update buttons
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Update forms
+                document.querySelectorAll('.form-content').forEach(f => f.classList.remove('active'));
+                document.getElementById(`${tab}-form`).classList.add('active');
+                
+                // Clear messages
+                hideMessages();
+            });
+        });
+
+        // Show parent phone field for students
+        document.querySelectorAll('input[name="role"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                const parentPhoneGroup = document.getElementById('parentPhoneGroup');
+                if (radio.value === 'student') {
+                    parentPhoneGroup.style.display = 'block';
+                } else {
+                    parentPhoneGroup.style.display = 'none';
+                }
+            });
+        });
+
+        // Login form
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const loginBtn = document.getElementById('loginBtn');
+            
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'جاري تسجيل الدخول...';
+            hideMessages();
+            
+            try {
+                const response = await fetch(`${API_URL}/api/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    localStorage.setItem('authToken', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    
+                    showSuccess('تم تسجيل الدخول بنجاح! جاري التحويل...');
+                    
+                    setTimeout(() => {
+                        if (data.user.role === 'teacher') {
+                            window.location.href = '/teacher-dashboard.html';
+                        } else if (data.user.role === 'admin') {
+                            window.location.href = '/admin-dashboard.html';
+                        } else {
+                            window.location.href = '/index.html';
+                        }
+                    }, 1000);
+                } else {
+                    showError(data.error || 'فشل تسجيل الدخول');
+                    loginBtn.disabled = false;
+                    loginBtn.textContent = 'تسجيل الدخول';
+                }
+            } catch (error) {
+                showError('حدث خطأ في الاتصال بالخادم');
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'تسجيل الدخول';
+            }
+        });
+
+        // Register form
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const full_name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const phone = document.getElementById('registerPhone').value;
+            const password = document.getElementById('registerPassword').value;
+            const role = document.querySelector('input[name="role"]:checked').value;
+            const parent_phone = role === 'student' ? document.getElementById('parentPhone').value : null;
+            const registerBtn = document.getElementById('registerBtn');
+            
+            registerBtn.disabled = true;
+            registerBtn.textContent = 'جاري إنشاء الحساب...';
+            hideMessages();
+            
+            try {
+                const response = await fetch(`${API_URL}/api/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        full_name, 
+                        email, 
+                        phone, 
+                        password, 
+                        role,
+                        parent_phone 
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    localStorage.setItem('authToken', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    
+                    showSuccess('تم إنشاء الحساب بنجاح! جاري التحويل...');
+                    
+                    setTimeout(() => {
+                        if (data.user.role === 'teacher') {
+                            window.location.href = '/teacher-dashboard.html';
+                        } else if (data.user.role === 'admin') {
+                            window.location.href = '/admin-dashboard.html';
+                        } else {
+                            window.location.href = '/index.html';
+                        }
+                    }, 1000);
+                } else {
+                    showError(data.error || 'فشل إنشاء الحساب');
+                    registerBtn.disabled = false;
+                    registerBtn.textContent = 'إنشاء حساب';
+                }
+            } catch (error) {
+                showError('حدث خطأ في الاتصال بالخادم');
+                registerBtn.disabled = false;
+                registerBtn.textContent = 'إنشاء حساب';
+            }
+        });
+
+        // Helper functions
+        function showError(message) {
+            const errorMsg = document.getElementById('errorMessage');
+            errorMsg.textContent = message;
+            errorMsg.classList.add('show');
+        }
+
+        function showSuccess(message) {
+            const successMsg = document.getElementById('successMessage');
+            successMsg.textContent = message;
+            successMsg.classList.add('show');
+        }
+
+        function hideMessages() {
+            document.getElementById('errorMessage').classList.remove('show');
+            document.getElementById('successMessage').classList.remove('show');
+        }
+
+        // Check for OAuth callback token
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        if (token) {
+            localStorage.setItem('authToken', token);
+            
+            // Fetch user info
+            fetch(`${API_URL}/api/auth/me`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
+            .then(res => res.json())
+            .then(user => {
+                localStorage.setItem('user', JSON.stringify(user));
+                if (user.role === 'teacher') {
+                    window.location.href = '/teacher-dashboard.html';
+                } else if (user.role === 'admin') {
+                    window.location.href = '/admin-dashboard.html';
+                } else {
+                    window.location.href = '/index.html';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
